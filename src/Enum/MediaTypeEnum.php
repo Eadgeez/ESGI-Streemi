@@ -2,7 +2,8 @@
 
 namespace App\Enum;
 
-enum MediaTypeEnum
+enum MediaTypeEnum: string
 {
-
+    case MOVIE = 'movie';
+    case SERIE = 'serie';
 }
