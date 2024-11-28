@@ -1,0 +1,43 @@
+services:
+  php:
+    user: 1000:1000
+    image: naegato/php-symfony:php8.3-postgres-2
+    volumes:
+      - .:/srv:cached
+    hostname: api
+    container_name: api
+    depends_on:
+      - db
+
+  web:
+    build:
+      context: ./docker/nginx
+    volumes:
+      - .:/srv:cached
+    hostname: web-api
+    environment:
+      fastcgi_pass: api:9000
+    depends_on:
+      - php
+    ports:
+      - 8000:80
+
+  db:
+    image: postgres:${POSTGRES_VERSION:-16}-alpine
+    environment:
+      - POSTGRES_DB=${DB_NAME:-app}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-!ChangeMe!}
+      - POSTGRES_USER=${DB_USER:-app}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-app}", "-U", "${POSTGRES_USER:-app}"]
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    volumes:
+      - db_data:/var/lib/postgresql/data:rw
+
+#  adminer:
+#    image: adminer:4.8.1
+
+volumes:
+  db_data:
