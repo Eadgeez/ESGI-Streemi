@@ -17,7 +17,7 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/category/{id}', name: 'category')]
-    public function category(int $id): Response
+    public function index(int $id): Response
     {
         $category = $this->categoryRepository->find($id);
         $categories = $this->categoryRepository->findAll();

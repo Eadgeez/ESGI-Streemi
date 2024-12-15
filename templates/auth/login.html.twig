@@ -87,6 +87,11 @@
                                    value="{{ csrf_token('authenticate') }}"
                                 >
                                 <div class="flex items-center justify-center mt-16">
+                                    <a href="{{ path('register') }}" class="text-red-600 cursor-pointer transition hover:text-red-700 hover:scale-105">
+                                        Vous n'avez pas encore de compte ?
+                                    </a>
+                                </div>
+                                <div class="flex items-center justify-center mt-4">
                                     <a href="{{ path('forgot_password') }}" class="text-red-600 cursor-pointer transition hover:text-red-700 hover:scale-105">
                                         Vous avez oubliez votre mot de passe ?
                                     </a>
