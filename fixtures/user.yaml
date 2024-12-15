@@ -1,17 +1,20 @@
 App\Entity\User:
-
-  user_template (template):
+  user (template):
+    username: '<username()>'
     email: '<email()>'
-    username: '<userName()>'
-    password: '<password()>'
-    profilePicture: 'https://picsum.photos/400/400?random=<numberBetween(1, 100)>'
+    plainPassword: '<password()>'
+    accountStatus: !php/const \App\Enum\UserAccountStatusEnum::ACTIVE
 
-  user_admin (extends user_template):
-    email: 'admin\@example.com'
-    password: 'motdepasse'
+  user_1 (extends user):
+    username: 'Max'
+    email: 'mmenard18@myges.fr'
+    plainPassword: 'max07'
 
-  user_with_subscription_{1..5} (extends user_template):
-    email: '<email()>'
-    currentSubscription: '@subscription_*'
+  user_{2..10} (extends user):
+    accountStatus: !php/const \App\Enum\UserAccountStatusEnum::ACTIVE
 
-  user_without_subscription_{1..5} (extends user_template):
+  user_{11..20} (extends user):
+    accountStatus: !php/const \App\Enum\UserAccountStatusEnum::INACTIVE
+
+  user_{21..30} (extends user):
+    accountStatus: !php/const \App\Enum\UserAccountStatusEnum::BANNED

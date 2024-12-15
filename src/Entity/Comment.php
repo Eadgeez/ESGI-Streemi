@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Enum\CommentStatusEnum;
@@ -20,11 +22,11 @@ class Comment
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
-    #[ORM\Column(enumType: CommentStatusEnum::class)]
-    private ?CommentStatusEnum $status = null;
+    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $publisher = null;
 
     #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'childComments')]
-    #[ORM\JoinColumn(nullable: true, onDelete: 'CASCADE')]
     private ?self $parentComment = null;
 
     /**
@@ -34,12 +36,10 @@ class Comment
     private Collection $childComments;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $publisher = null;
-
-    #[ORM\ManyToOne(inversedBy: 'comments')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Media $media = null;
+
+    #[ORM\Column(enumType: CommentStatusEnum::class, options: ['default' => CommentStatusEnum::PENDING])]
+    private ?CommentStatusEnum $status = null;
 
     public function __construct()
     {
@@ -63,14 +63,14 @@ class Comment
         return $this;
     }
 
-    public function getStatus(): ?CommentStatusEnum
+    public function getPublisher(): ?User
     {
-        return $this->status;
+        return $this->publisher;
     }
 
-    public function setStatus(CommentStatusEnum $status): static
+    public function setPublisher(?User $publisher): static
     {
-        $this->status = $status;
+        $this->publisher = $publisher;
 
         return $this;
     }
@@ -117,18 +117,6 @@ class Comment
         return $this;
     }
 
-    public function getPublisher(): ?User
-    {
-        return $this->publisher;
-    }
-
-    public function setPublisher(?User $publisher): static
-    {
-        $this->publisher = $publisher;
-
-        return $this;
-    }
-
     public function getMedia(): ?Media
     {
         return $this->media;
@@ -137,6 +125,18 @@ class Comment
     public function setMedia(?Media $media): static
     {
         $this->media = $media;
+
+        return $this;
+    }
+
+    public function getStatus(): ?CommentStatusEnum
+    {
+        return $this->status;
+    }
+
+    public function setStatus(CommentStatusEnum $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }

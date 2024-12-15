@@ -1,0 +1,9 @@
+<a
+    class="flex items-center space-x-2 py-1 {% if route is defined and app.current_route == route %} font-semibold  border-r-4 border-r-red-600 pr-20 {% else %} group hover:border-r-4 hover:border-r-red-600 hover:font-semibold {% endif %}"
+    href="{% if route is defined %}{{ path(route) }}{% else  %}#{% endif %}"
+>
+    <svg class="h-5 w-5 {% if route is defined and app.current_route == route %}fill-red-600{% else %} group-hover:fill-red-600{% endif %}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        {% block content %}{% endblock %}
+    </svg>
+    <span>{{ text }}</span>
+</a>

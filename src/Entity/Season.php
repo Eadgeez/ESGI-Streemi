@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\SeasonRepository;
@@ -15,8 +17,8 @@ class Season
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $number = null;
+    #[ORM\Column]
+    private ?int $seasonNumber = null;
 
     #[ORM\ManyToOne(inversedBy: 'seasons')]
     #[ORM\JoinColumn(nullable: false)]
@@ -38,14 +40,14 @@ class Season
         return $this->id;
     }
 
-    public function getNumber(): ?string
+    public function getSeasonNumber(): ?int
     {
-        return $this->number;
+        return $this->seasonNumber;
     }
 
-    public function setNumber(string $number): static
+    public function setSeasonNumber(int $seasonNumber): static
     {
-        $this->number = $number;
+        $this->seasonNumber = $seasonNumber;
 
         return $this;
     }

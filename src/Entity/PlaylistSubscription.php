@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\PlaylistSubscriptionRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PlaylistSubscriptionRepository::class)]
@@ -13,8 +16,8 @@ class PlaylistSubscription
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $subscribedAt = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $subscribedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'playlistSubscriptions')]
     #[ORM\JoinColumn(nullable: false)]
@@ -29,26 +32,14 @@ class PlaylistSubscription
         return $this->id;
     }
 
-    public function getSubscribedAt(): ?\DateTimeImmutable
+    public function getSubscribedAt(): ?\DateTimeInterface
     {
         return $this->subscribedAt;
     }
 
-    public function setSubscribedAt(\DateTimeImmutable $subscribedAt): static
+    public function setSubscribedAt(\DateTimeInterface $subscribedAt): static
     {
         $this->subscribedAt = $subscribedAt;
-
-        return $this;
-    }
-
-    public function getSubscriber(): ?User
-    {
-        return $this->subscriber;
-    }
-
-    public function setSubscriber(?User $subscriber): static
-    {
-        $this->subscriber = $subscriber;
 
         return $this;
     }
@@ -61,6 +52,18 @@ class PlaylistSubscription
     public function setPlaylist(?Playlist $playlist): static
     {
         $this->playlist = $playlist;
+
+        return $this;
+    }
+
+    public function getSubscriber(): ?User
+    {
+        return $this->subscriber;
+    }
+
+    public function setSubscriber(?User $subscriber): static
+    {
+        $this->subscriber = $subscriber;
 
         return $this;
     }

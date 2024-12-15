@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
@@ -15,16 +17,16 @@ class Category
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    #[ORM\Column(length: 100)]
+    private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 100)]
     private ?string $label = null;
 
     /**
      * @var Collection<int, Media>
      */
-    #[ORM\ManyToMany(targetEntity: Media::class, mappedBy: 'categories')]
+    #[ORM\ManyToMany(targetEntity: Media::class, inversedBy: 'categories')]
     private Collection $medias;
 
     public function __construct()
@@ -37,14 +39,14 @@ class Category
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getName(): ?string
     {
-        return $this->nom;
+        return $this->name;
     }
 
-    public function setNom(string $nom): static
+    public function setName(string $name): static
     {
-        $this->nom = $nom;
+        $this->name = $name;
 
         return $this;
     }
@@ -64,7 +66,7 @@ class Category
     /**
      * @return Collection<int, Media>
      */
-    public function getMedia(): Collection
+    public function getMedias(): Collection
     {
         return $this->medias;
     }
@@ -73,7 +75,6 @@ class Category
     {
         if (!$this->medias->contains($media)) {
             $this->medias->add($media);
-            $media->addCategory($this);
         }
 
         return $this;
@@ -81,10 +82,25 @@ class Category
 
     public function removeMedia(Media $media): static
     {
-        if ($this->medias->removeElement($media)) {
-            $media->removeCategory($this);
-        }
+        $this->medias->removeElement($media);
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Movie>
+     */
+    public function getMovies(): Collection
+    {
+        return $this->medias->filter(fn (Media $media) => $media instanceof Movie);
+    }
+
+    /**
+     * @return Collection<int, Serie>
+     */
+    public function getSeries(): Collection
+    {
+        return $this->medias->filter(fn (Media $media) => $media instanceof Serie);
+    }
+
 }

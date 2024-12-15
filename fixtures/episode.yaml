@@ -1,0 +1,72 @@
+App\Entity\Episode:
+  episode_1_{@season_*}:
+    season: '@season_*'
+    title: <words(3, true)>
+    releaseAt: <dateTimeBetween('-10 years', 'now')>
+    duration: <dateTimeBetween('2024-11-29 0:0:0.0', '2024-11-29 2:0:0.0')>
+
+  episode_2_{@season_*}:
+    season: '@season_*'
+    title: <words(3, true)>
+    releaseAt: <dateTimeBetween('-10 years', 'now')>
+    duration: <dateTimeBetween('2024-11-29 0:0:0.0', '2024-11-29 2:0:0.0')>
+
+  episode_3_{@season_*}:
+    season: '@season_*'
+    title: <words(3, true)>
+    releaseAt: <dateTimeBetween('-10 years', 'now')>
+    duration: <dateTimeBetween('2024-11-29 0:0:0.0', '2024-11-29 2:0:0.0')>
+
+  episode_4_{@season_*}:
+    season: '@season_*'
+    title: <words(3, true)>
+    releaseAt: <dateTimeBetween('-10 years', 'now')>
+    duration: <dateTimeBetween('2024-11-29 0:0:0.0', '2024-11-29 2:0:0.0')>
+
+  episode_5_{@season_*}:
+    season: '@season_*'
+    title: <words(3, true)>
+    releaseAt: <dateTimeBetween('-10 years', 'now')>
+    duration: <dateTimeBetween('2024-11-29 0:0:0.0', '2024-11-29 2:0:0.0')>
+
+  episode_6_{@season_*}:
+    season: '@season_*'
+    title: <words(3, true)>
+    releaseAt: <dateTimeBetween('-10 years', 'now')>
+    duration: <dateTimeBetween('2024-11-29 0:0:0.0', '2024-11-29 2:0:0.0')>
+
+  episode_7_{@season_*}:
+    season: '@season_*'
+    title: <words(3, true)>
+    releaseAt: <dateTimeBetween('-10 years', 'now')>
+    duration: <dateTimeBetween('2024-11-29 0:0:0.0', '2024-11-29 2:0:0.0')>
+
+  episode_8_{@season_*}:
+    season: '@season_*'
+    title: <words(3, true)>
+    releaseAt: <dateTimeBetween('-10 years', 'now')>
+    duration: <dateTimeBetween('2024-11-29 0:0:0.0', '2024-11-29 2:0:0.0')>
+
+  episode_9_{@season_*}:
+    season: '@season_*'
+    title: <words(3, true)>
+    releaseAt: <dateTimeBetween('-10 years', 'now')>
+    duration: <dateTimeBetween('2024-11-29 0:0:0.0', '2024-11-29 2:0:0.0')>
+
+  episode_10_{@season_*}:
+    season: '@season_*'
+    title: <words(3, true)>
+    releaseAt: <dateTimeBetween('-10 years', 'now')>
+    duration: <dateTimeBetween('2024-11-29 0:0:0.0', '2024-11-29 2:0:0.0')>
+
+  episode_11_{@season_*}:
+    season: '@season_*'
+    title: <words(3, true)>
+    releaseAt: <dateTimeBetween('-10 years', 'now')>
+    duration: <dateTimeBetween('2024-11-29 0:0:0.0', '2024-11-29 2:0:0.0')>
+
+  episode_12_{@season_*}:
+    season: '@season_*'
+    title: <words(3, true)>
+    releaseAt: <dateTimeBetween('-10 years', 'now')>
+    duration: <dateTimeBetween('2024-11-29 0:0:0.0', '2024-11-29 2:0:0.0')>

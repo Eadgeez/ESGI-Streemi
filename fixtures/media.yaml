@@ -1,42 +1,62 @@
 App\Entity\Media:
   media (template):
-    title: 'Media <current()>'
-    shortDescription: 'short description'
-    longDescription: '<realText()>'
-    releaseDate: '<datetime()>'
-    coverImage: 'https://picsum.photos/400/550?random=<numberBetween(1, 100)>'
-
-App\Entity\Movie:
-  media_movie_{1..50} (extends media):
-    title: 'Movie <current()>'
+    title: 'Media <words(3, true)>'
+    releaseAt: <dateTimeBetween('-10 years', 'now')>
+    shortDescription: <text(200)>
+    longDescription: <text(1000)>
+    coverImage: '<picsumUrl(640, 480, false, false, true)>'
+    categories: ['@category_*', '@category_*', '@category_*']
+    languages: ['@language_*', '@language_*']
+    rating: '<numberBetween(1, 100)>'
 
 App\Entity\Serie:
-  media_serie_{1..50} (extends media):
-    title: 'Serie <current()>'
+  media_serie_{1..30} (extends media):
+    title: 'Serie <words(3, true)>'
+    seasons: []
 
+App\Entity\Movie:
+  media_movie_1 (extends media):
+    title: 'Tenet'
+    coverImage: 'https://upload.wikimedia.org/wikipedia/en/1/14/Tenet_movie_poster.jpg'
 
-App\Entity\Season:
-  season_1_{@media_serie*}:
-    number: '<numberBetween(1, 10)>'
-    serie: '<current()>'
-  season_2_{@media_serie*}:
-    number: '<numberBetween(1, 10)>'
-    serie: '<current()>'
-  season_3_{@media_serie*}:
-    number: '<numberBetween(1, 10)>'
-    serie: '<current()>'
+  media_movie_2 (extends media):
+    title: 'Fight Club'
+    coverImage: 'https://upload.wikimedia.org/wikipedia/en/f/fc/Fight_Club_poster.jpg'
 
-App\Entity\Episode:
-  episode_{1..500}:
-    title: '<sentence()>'
-    duration: '<numberBetween(45, 90)>'
-    releasedAt: "<dateTimeBetween('-1 week', '+1 week')>"
-    season: '@season_*'
+  media_movie_3 (extends media):
+    title: 'Dune'
+    coverImage: 'https://upload.wikimedia.org/wikipedia/en/8/8e/Dune_%282021_film%29.jpg'
 
+  media_movie_4 (extends media):
+    title: 'Interstellar'
+    coverImage: 'https://upload.wikimedia.org/wikipedia/en/b/bc/Interstellar_film_poster.jpg'
+
+  media_movie_5 (extends media):
+    title: 'Matrix'
+    coverImage: 'https://upload.wikimedia.org/wikipedia/en/c/c1/The_Matrix_Poster.jpg'
+
+  media_movie_6 (extends media):
+    title: 'Batman The Dark Knight'
+    coverImage: 'https://upload.wikimedia.org/wikipedia/en/1/1c/The_Dark_Knight_%282008_film%29.jpg'
+
+  media_movie_7 (extends media):
+    title: 'John Wick 4'
+    coverImage: 'https://m.media-amazon.com/images/I/81vZ6tNxuoL._SY500_.jpg'
+
+  media_movie_8 (extends media):
+    title: 'Super Mario Bros'
+    coverImage: 'https://m.media-amazon.com/images/I/91zqGNzwk5L._AC_UF1000,1000_QL80_.jpg'
+
+  media_movie_9 (extends media):
+    title: 'Le comte de Monte Cristo'
+    coverImage: 'https://fr.web.img6.acsta.net/img/29/eb/29eb8341475fdb0b19b1d7b995b70e17.jpg'
+
+  media_movie_{10..30} (extends media):
+    title: 'Movie <words(3,true)>'
 
 App\Entity\WatchHistory:
-    watch_history_{1..500}:
-      lastWatchedAt: "<dateTimeBetween('-1 week', '+1 week')>"
-      numberOfViews: '<numberBetween(1, 100)>'
-      watcher: '@user_*'
-      media: '@media_*'
+  watch_history_{1..500}:
+    lastWatchedAt: "<dateTimeBetween('-1 week', '+1 week')>"
+    numberOfViews: '<numberBetween(1, 100)>'
+    viewer: '@user_*'
+    media: '@media_*'

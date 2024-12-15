@@ -1,10 +1,9 @@
 App\Entity\Comment:
-
   comment_template (template):
     content: '<sentence()>'
-    status: !php/const \App\Enum\CommentStatusEnum::VALIDATED
     publisher: '@user_*'
     media: '@media_*'
+    status: !php/const \App\Enum\CommentStatusEnum::VALIDATED
 
   comment_{1..200} (extends comment_template):
 

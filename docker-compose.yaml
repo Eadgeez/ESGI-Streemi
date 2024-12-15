@@ -1,11 +1,10 @@
 services:
   php:
-    user: 1000:1000
     image: naegato/php-symfony:php8.3-postgres-2
     volumes:
-      - .:/srv:cached
-    hostname: api
-    container_name: api
+      - ./:/srv:cached
+    hostname: streami-php
+    container_name: streami-php
     depends_on:
       - db
 
@@ -14,9 +13,9 @@ services:
       context: ./docker/nginx
     volumes:
       - .:/srv:cached
-    hostname: web-api
+    hostname: streami-web
     environment:
-      fastcgi_pass: api:9000
+      fastcgi_pass: streami-php:9000
     depends_on:
       - php
     ports:
@@ -35,6 +34,20 @@ services:
       start_period: 60s
     volumes:
       - db_data:/var/lib/postgresql/data:rw
+    ports:
+      - 5432:5432
+
+  node:
+    image: node:22
+    volumes:
+      - ./:/srv:cached
+    working_dir: /srv
+    command: sh -c "npm install && npm run watch"
+
+  mailbox:
+    image: dockage/mailcatcher
+    ports:
+      - "8080:1080"
 
 #  adminer:
 #    image: adminer:4.8.1

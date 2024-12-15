@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\LanguageRepository;
@@ -15,16 +17,16 @@ class Language
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    #[ORM\Column(length: 100)]
+    private ?string $name = null;
 
-    #[ORM\Column(length: 3)]
+    #[ORM\Column(length: 100)]
     private ?string $code = null;
 
     /**
      * @var Collection<int, Media>
      */
-    #[ORM\ManyToMany(targetEntity: Media::class, mappedBy: 'languages')]
+    #[ORM\ManyToMany(targetEntity: Media::class, inversedBy: 'languages')]
     private Collection $medias;
 
     public function __construct()
@@ -37,14 +39,14 @@ class Language
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getName(): ?string
     {
-        return $this->nom;
+        return $this->name;
     }
 
-    public function setNom(string $nom): static
+    public function setName(string $name): static
     {
-        $this->nom = $nom;
+        $this->name = $name;
 
         return $this;
     }
@@ -73,7 +75,6 @@ class Language
     {
         if (!$this->medias->contains($media)) {
             $this->medias->add($media);
-            $media->addLanguage($this);
         }
 
         return $this;
@@ -81,9 +82,7 @@ class Language
 
     public function removeMedia(Media $media): static
     {
-        if ($this->medias->removeElement($media)) {
-            $media->removeLanguage($this);
-        }
+        $this->medias->removeElement($media);
 
         return $this;
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Enum\UserAccountStatusEnum;
@@ -7,17 +9,19 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 100)]
     private ?string $username = null;
 
     #[ORM\Column(length: 255)]
@@ -26,26 +30,13 @@ class User
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    #[ORM\Column(enumType: UserAccountStatusEnum::class)]
-    private ?UserAccountStatusEnum $accountStatus = UserAccountStatusEnum::INACTIVE;
-
-    #[ORM\ManyToOne(inversedBy: 'users')]
-    private ?Subscription $currentSubscription = null;
+    private string $plainPassword = '';
 
     /**
-     * @var Collection<int, Comment>
+     * @var Collection<int, WatchHistory>
      */
-    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'publisher')]
-    private Collection $comments;
-
-    #[ORM\Column(length: 255)]
-    private ?string $profilePicture = '';
-
-    /**
-     * @var Collection<int, Playlist>
-     */
-    #[ORM\OneToMany(targetEntity: Playlist::class, mappedBy: 'creator')]
-    private Collection $playlists;
+    #[ORM\OneToMany(targetEntity: WatchHistory::class, mappedBy: 'viewer')]
+    private Collection $watchHistories;
 
     /**
      * @var Collection<int, PlaylistSubscription>
@@ -54,24 +45,36 @@ class User
     private Collection $playlistSubscriptions;
 
     /**
+     * @var Collection<int, Playlist>
+     */
+    #[ORM\OneToMany(targetEntity: Playlist::class, mappedBy: 'creator')]
+    private Collection $playlists;
+
+    /**
      * @var Collection<int, SubscriptionHistory>
      */
     #[ORM\OneToMany(targetEntity: SubscriptionHistory::class, mappedBy: 'subscriber')]
-    private Collection $subscriptionHistories;
+    private Collection $subscriptionHistorie;
 
     /**
-     * @var Collection<int, WatchHistory>
+     * @var Collection<int, Comment>
      */
-    #[ORM\OneToMany(targetEntity: WatchHistory::class, mappedBy: 'watcher')]
-    private Collection $watchHistories;
+    #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'publisher')]
+    private Collection $comments;
+
+    #[ORM\Column(enumType: UserAccountStatusEnum::class, options: ['default' => UserAccountStatusEnum::INACTIVE])]
+    private ?UserAccountStatusEnum $accountStatus = null;
+
+    #[ORM\Column(type: 'json', nullable: false, options: ['default' => '["ROLE_USER"]'])]
+    private array $roles = [];
 
     public function __construct()
     {
-        $this->comments = new ArrayCollection();
-        $this->playlists = new ArrayCollection();
-        $this->playlistSubscriptions = new ArrayCollection();
-        $this->subscriptionHistories = new ArrayCollection();
         $this->watchHistories = new ArrayCollection();
+        $this->playlistSubscriptions = new ArrayCollection();
+        $this->playlists = new ArrayCollection();
+        $this->subscriptionHistorie = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -115,96 +118,30 @@ class User
         return $this;
     }
 
-    public function getAccountStatus(): ?UserAccountStatusEnum
-    {
-        return $this->accountStatus;
-    }
-
-    public function setAccountStatus(UserAccountStatusEnum $accountStatus): static
-    {
-        $this->accountStatus = $accountStatus;
-
-        return $this;
-    }
-
-    public function getCurrentSubscription(): ?Subscription
-    {
-        return $this->currentSubscription;
-    }
-
-    public function setCurrentSubscription(?Subscription $currentSubscription): static
-    {
-        $this->currentSubscription = $currentSubscription;
-
-        return $this;
-    }
-
     /**
-     * @return Collection<int, Comment>
+     * @return Collection<int, WatchHistory>
      */
-    public function getComments(): Collection
+    public function getWatchHistories(): Collection
     {
-        return $this->comments;
+        return $this->watchHistories;
     }
 
-    public function addComment(Comment $comment): static
+    public function addWatchHistory(WatchHistory $medium): static
     {
-        if (!$this->comments->contains($comment)) {
-            $this->comments->add($comment);
-            $comment->setPublisher($this);
+        if (!$this->watchHistories->contains($medium)) {
+            $this->watchHistories->add($medium);
+            $medium->setViewer($this);
         }
 
         return $this;
     }
 
-    public function removeComment(Comment $comment): static
+    public function removeWatchHistory(WatchHistory $medium): static
     {
-        if ($this->comments->removeElement($comment)) {
+        if ($this->watchHistories->removeElement($medium)) {
             // set the owning side to null (unless already changed)
-            if ($comment->getPublisher() === $this) {
-                $comment->setPublisher(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getProfilePicture(): ?string
-    {
-        return $this->profilePicture;
-    }
-
-    public function setProfilePicture(string $profilePicture): static
-    {
-        $this->profilePicture = $profilePicture;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Playlist>
-     */
-    public function getPlaylists(): Collection
-    {
-        return $this->playlists;
-    }
-
-    public function addPlaylist(Playlist $playlist): static
-    {
-        if (!$this->playlists->contains($playlist)) {
-            $this->playlists->add($playlist);
-            $playlist->setCreator($this);
-        }
-
-        return $this;
-    }
-
-    public function removePlaylist(Playlist $playlist): static
-    {
-        if ($this->playlists->removeElement($playlist)) {
-            // set the owning side to null (unless already changed)
-            if ($playlist->getCreator() === $this) {
-                $playlist->setCreator(null);
+            if ($medium->getViewer() === $this) {
+                $medium->setViewer(null);
             }
         }
 
@@ -242,29 +179,29 @@ class User
     }
 
     /**
-     * @return Collection<int, SubscriptionHistory>
+     * @return Collection<int, Playlist>
      */
-    public function getSubscriptionHistories(): Collection
+    public function getPlaylists(): Collection
     {
-        return $this->subscriptionHistories;
+        return $this->playlists;
     }
 
-    public function addSubscriptionHistory(SubscriptionHistory $subscriptionHistory): static
+    public function addPlaylist(Playlist $playlist): static
     {
-        if (!$this->subscriptionHistories->contains($subscriptionHistory)) {
-            $this->subscriptionHistories->add($subscriptionHistory);
-            $subscriptionHistory->setSubscriber($this);
+        if (!$this->playlists->contains($playlist)) {
+            $this->playlists->add($playlist);
+            $playlist->setCreator($this);
         }
 
         return $this;
     }
 
-    public function removeSubscriptionHistory(SubscriptionHistory $subscriptionHistory): static
+    public function removePlaylist(Playlist $playlist): static
     {
-        if ($this->subscriptionHistories->removeElement($subscriptionHistory)) {
+        if ($this->playlists->removeElement($playlist)) {
             // set the owning side to null (unless already changed)
-            if ($subscriptionHistory->getSubscriber() === $this) {
-                $subscriptionHistory->setSubscriber(null);
+            if ($playlist->getCreator() === $this) {
+                $playlist->setCreator(null);
             }
         }
 
@@ -272,32 +209,106 @@ class User
     }
 
     /**
-     * @return Collection<int, WatchHistory>
+     * @return Collection<int, SubscriptionHistory>
      */
-    public function getWatchHistories(): Collection
+    public function getSubscriptionHistorie(): Collection
     {
-        return $this->watchHistories;
+        return $this->subscriptionHistorie;
     }
 
-    public function addWatchHistory(WatchHistory $watchHistory): static
+    public function addSubscriptionHistorie(SubscriptionHistory $subscriptionHistorie): static
     {
-        if (!$this->watchHistories->contains($watchHistory)) {
-            $this->watchHistories->add($watchHistory);
-            $watchHistory->setWatcher($this);
+        if (!$this->subscriptionHistorie->contains($subscriptionHistorie)) {
+            $this->subscriptionHistorie->add($subscriptionHistorie);
+            $subscriptionHistorie->setSubscriber($this);
         }
 
         return $this;
     }
 
-    public function removeWatchHistory(WatchHistory $watchHistory): static
+    public function removeSubscriptionHistorie(SubscriptionHistory $subscriptionHistorie): static
     {
-        if ($this->watchHistories->removeElement($watchHistory)) {
+        if ($this->subscriptionHistorie->removeElement($subscriptionHistorie)) {
             // set the owning side to null (unless already changed)
-            if ($watchHistory->getWatcher() === $this) {
-                $watchHistory->setWatcher(null);
+            if ($subscriptionHistorie->getSubscriber() === $this) {
+                $subscriptionHistorie->setSubscriber(null);
             }
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Comment>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setPublisher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getPublisher() === $this) {
+                $comment->setPublisher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAccountStatus(): ?UserAccountStatusEnum
+    {
+        return $this->accountStatus;
+    }
+
+    public function setAccountStatus(UserAccountStatusEnum $accountStatus): static
+    {
+        $this->accountStatus = $accountStatus;
+
+        return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles ?? ['ROLE_USER'];
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function eraseCredentials(): void
+    {
+        $this->plainPassword = '';
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
+    }
+
+    public function getPlainPassword(): string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(string $plainPassword): void
+    {
+        $this->plainPassword = $plainPassword;
     }
 }

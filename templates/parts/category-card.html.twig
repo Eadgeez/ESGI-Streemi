@@ -1,0 +1,8 @@
+<a href="{{ path('category', { 'id': id }) }}" class="relative flex flex-row items-center justify-center rounded-xl overflow-hidden aspect-square border hover:scale-105 cursor-pointer transition hover:bg-gray-100">
+    {% if image is defined and image is not null %}
+        <span class="text-red-600 font-bold mr-2">
+            <img src="{{ image }}" alt="{{ title|raw }} image">
+        </span>
+    {% endif %}
+    <span class="capitalize font-medium text-3xl truncate">{{ title|raw }}</span>
+</a>

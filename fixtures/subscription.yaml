@@ -1,0 +1,47 @@
+App\Entity\Subscription:
+  subscription (template):
+    name: '<words(3, true)>'
+    price: '<numberBetween(100, 10000)>'
+    durationInMonths: '<numberBetween(1, 100)>'
+    quality: '<word()>'
+    description: '<paragraph()>'
+    catchphrase: '<sentence()>'
+
+  subscription_monthly (extends subscription):
+    name: 'Abonnement mensuel'
+    price: 900
+    durationInMonths: 1
+    quality: '720P HD'
+  subscription_3_months (extends subscription):
+    name: 'Abonnement 3 mois'
+    price: 2500
+    durationInMonths: 3
+    quality: '720P HD FHD'
+  subscription_6_months (extends subscription):
+    name: 'Abonnement 6 mois'
+    price: 5000
+    durationInMonths: 6
+    quality: '4K QHD FHD'
+  subscription_annual (extends subscription):
+    name: 'Abonnement annuel'
+    price: 9500
+    durationInMonths: 12
+    quality: '4K HDR'
+  subscription_lifetime (extends subscription):
+    name: 'Abonnement à vie'
+    price: 999999
+    durationInMonths: 9999
+    quality: '8K 4K HDR 3D'
+
+  subscription_{1..10} (extends subscription):
+    name: 'Abonnement <current()>'
+    price: '<numberBetween(999999, 99999999)>'
+    durationInMonths: '<numberBetween(9999, 999999)>'
+    quality: '<word()>'
+
+App\Entity\SubscriptionHistory:
+  sub_history:
+    startAt: '<dateTimeBetween("-1 year", "now")>'
+    endAt: '<dateTimeBetween("now", "+1 year")>'
+    subscriber: '@user_*'
+    subscription: '@subscription_*'

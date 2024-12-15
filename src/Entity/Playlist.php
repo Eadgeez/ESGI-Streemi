@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\PlaylistRepository;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PlaylistRepository::class)]
@@ -19,11 +21,11 @@ class Playlist
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column]
-    private ?DateTimeImmutable $createdAt = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
 
-    #[ORM\Column]
-    private ?DateTimeImmutable $updatedAt = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $updatedAt = null;
 
     /**
      * @var Collection<int, PlaylistSubscription>
@@ -39,12 +41,12 @@ class Playlist
      * @var Collection<int, PlaylistMedia>
      */
     #[ORM\OneToMany(targetEntity: PlaylistMedia::class, mappedBy: 'playlist')]
-    private Collection $playlistMedia;
+    private Collection $playlistMedias;
 
     public function __construct()
     {
         $this->playlistSubscriptions = new ArrayCollection();
-        $this->playlistMedia = new ArrayCollection();
+        $this->playlistMedias = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -64,24 +66,24 @@ class Playlist
         return $this;
     }
 
-    public function getCreatedAt(): ?DateTimeImmutable
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(DateTimeImmutable $createdAt): static
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?DateTimeImmutable
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(DateTimeImmutable $updatedAt): static
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
 
@@ -133,15 +135,31 @@ class Playlist
     /**
      * @return Collection<int, PlaylistMedia>
      */
-    public function getPlaylistMedia(): Collection
+    public function getPlaylistMedias(): Collection
     {
-        return $this->playlistMedia;
+        return $this->playlistMedias;
+    }
+
+    /**
+     * @return Collection<int, PlaylistMedia>
+     */
+    public function getPlaylistMediasMovies(): Collection
+    {
+        return $this->playlistMedias->filter(fn (PlaylistMedia $playlistMedia) => $playlistMedia->getMedia() instanceof Movie);
+    }
+
+    /**
+     * @return Collection<int, PlaylistMedia>
+     */
+    public function getPlaylistMediasSeries(): Collection
+    {
+        return $this->playlistMedias->filter(fn (PlaylistMedia $playlistMedia) => $playlistMedia->getMedia() instanceof Serie);
     }
 
     public function addPlaylistMedium(PlaylistMedia $playlistMedium): static
     {
-        if (!$this->playlistMedia->contains($playlistMedium)) {
-            $this->playlistMedia->add($playlistMedium);
+        if (!$this->playlistMedias->contains($playlistMedium)) {
+            $this->playlistMedias->add($playlistMedium);
             $playlistMedium->setPlaylist($this);
         }
 
@@ -150,7 +168,7 @@ class Playlist
 
     public function removePlaylistMedium(PlaylistMedia $playlistMedium): static
     {
-        if ($this->playlistMedia->removeElement($playlistMedium)) {
+        if ($this->playlistMedias->removeElement($playlistMedium)) {
             // set the owning side to null (unless already changed)
             if ($playlistMedium->getPlaylist() === $this) {
                 $playlistMedium->setPlaylist(null);

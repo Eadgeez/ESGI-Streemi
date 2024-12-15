@@ -1,0 +1,29 @@
+App\Entity\Category:
+  category (template):
+    name: '<word()>'
+    label: '<word()>'
+    medias: []
+
+  category_action (extends category):
+    name: 'action'
+    label: 'Action'
+
+  category_adventure (extends category):
+    name: 'adventure'
+    label: 'Aventure'
+
+  category_comedy (extends category):
+    name: 'comedy'
+    label: 'Comédie'
+
+  category_sf (extends category):
+    name: 'sf'
+    label: 'Science-fiction'
+
+  category_animation (extends category):
+    name: 'animation'
+    label: 'Animation'
+
+  category_{1..3} (extends category):
+    name: '<word()>'
+    label: '<word()>'

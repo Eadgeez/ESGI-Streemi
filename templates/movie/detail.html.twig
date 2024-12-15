@@ -1,33 +1,9 @@
-<!DOCTYPE html>
-<html lang="fr">
+{% extends 'base.html.twig' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="../../template-html/style/style.css" rel="stylesheet">
-    <title>Streemi - Détail</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-
-<body class="font-montserrat text-sm bg-white " >
-<div class="flex min-h-screen  2xl:max-w-screen-2xl 2xl:mx-auto 2xl:border-x-2 2xl:border-gray-200">
-    {% include 'parts/left-menu.html.twig' %}
-
-    <main class=" flex-1 py-10  px-5 sm:px-10 ">
-        <header class=" font-bold text-lg flex items-center gap-x-3 md:hidden mb-9">
-                <span class="mr-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7" />
-                      </svg>
-                </span>
-            <svg class="h-8 w-8 fill-red-600 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M10 15.5v-7c0-.41.47-.65.8-.4l4.67 3.5c.27.2.27.6 0 .8l-4.67 3.5c-.33.25-.8.01-.8-.4Zm11.96-4.45c.58 6.26-4.64 11.48-10.9 10.9 -4.43-.41-8.12-3.85-8.9-8.23 -.26-1.42-.19-2.78.12-4.04 .14-.58.76-.9 1.31-.7v0c.47.17.75.67.63 1.16 -.2.82-.27 1.7-.19 2.61 .37 4.04 3.89 7.25 7.95 7.26 4.79.01 8.61-4.21 7.94-9.12 -.51-3.7-3.66-6.62-7.39-6.86 -.83-.06-1.63.02-2.38.2 -.49.11-.99-.16-1.16-.64v0c-.2-.56.12-1.17.69-1.31 1.79-.43 3.75-.41 5.78.37 3.56 1.35 6.15 4.62 6.5 8.4ZM5.5 4C4.67 4 4 4.67 4 5.5 4 6.33 4.67 7 5.5 7 6.33 7 7 6.33 7 5.5 7 4.67 6.33 4 5.5 4Z"></path>
-            </svg>
-            <div class="tracking-wideflex-1">MMovie<span class="text-red-600">.</span></div>
-        </header>
-        <section class="">
-            <h1 class="text-lg font-medium text-black">Détails de <span class="font-bold text-red-600">Interstellar</span></h1>
+{% block body %}
+    <main class="flex-1 py-10 px-5 sm:px-10">
+        <section class="block">
+            <h1 class="text-lg font-medium text-black">Détails de <span class="font-bold text-red-600">{{ title }}</span></h1>
             <div class="flex flex-col items-center mt-9">
                 <a class="relative flex w-full flex-row p-3 items-center justify-center rounded-lg overflow-hidden border hover:scale-105 cursor-pointer transition hover:bg-gray-100">
                     <span class="text-red-600 font-bold mr-2">
@@ -39,15 +15,15 @@
         </section>
         <section class="mt-9">
             <div class="flex flex-col justify-between mt-4 bg-black/10 bg-blend-multiply h-96 overflow-hidden bg-cover bg-center px-7 pt-4 pb-6 text-white -ml-10 -mr-10 rounded-none"
-                 style="background-image: url('https://resize.elle.fr/original/var/plain_site/storage/images/loisirs/cinema/news/inception-films-et-series-a-regarder-si-vous-aimez-le-film-avec-leonardo-dicaprio/97088011-1-fre-FR/Inception-5-films-et-series-a-regarder-si-vous-aimez-le-film-avec-Leonardo-DiCaprio.jpg')" >
-                <div class="flex -space-x-1 items-center ">
+                 style="background-image: url('{{ image_path }}');">
+                <div class="flex -space-x-1 items-center">
                     <img class="rounded-full w-7 h-7 shadow-lg border border-white" src="https://random.imagecdn.app/100/100?a" alt="" srcset="">
                     <img class="rounded-full w-7 h-7 shadow-lg border border-white" src="https://random.imagecdn.app/100/100?b" alt="" srcset="">
-                    <img class="rounded-full w-7 h-7 shadow-lg border border-white" src="https://random.imagecdn.app/100/100?c" alt="" srcset="">
+                    <img class="rounded-full w-7 h-7 shadow-lg borderœ border-white" src="https://random.imagecdn.app/100/100?c" alt="" srcset="">
                     <span class="pl-4 text-xs drop-shadow-lg">Recommandé par 12 amis</span>
                 </div>
                 <div class="bg-gradient-to-r from-black/40 to-transparent -mx-7 -mb-6 px-7 pb-6 pt-2">
-                    <span class="uppercase text-3xl font-semibold drop-shadow-lg ">Inception</span>
+                    <span class="uppercase text-3xl font-semibold drop-shadow-lg">{{ title }}</span>
                     <div class="mt-4 flex items-center justify-between">
                         <div class="flex space-x-3 items-center">
                             <a href="#" class="px-5 flex items-center justify-center py-2.5 bg-red-600 hover:bg-red-700 rounded-lg text-xs inline-block">
@@ -99,11 +75,12 @@
             </div>
             <div class="max-w-3xl mx-auto mt-9">
                 <h2 class="text-lg font-medium text-black">Résumé <span class="font-bold text-red-600">rapide</span></h2>
-                <p class="text-md mt-9">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam, consectetur deleniti deserunt ducimus harum iusto laboriosam minima nobis obcaecati odit officiis omnis quibusdam repellat repudiandae totam voluptas, voluptatem voluptatibus voluptatum.</p>
+                <p class="text-md mt-9">{{ resume }}</p>
             </div>
             <div class="max-w-3xl mx-auto mt-9">
                 <h2 class="text-lg font-medium text-black"><span class="font-bold text-red-600">Équipe</span> du film</h2>
                 <ul class="mt-9 grid grid-cols-2 sm:grid-cols-4 gap-x-5 gap-y-5">
+                    <!-- Staff -->
                     <li class="relative rounded-xl overflow-hidden transition cursor-pointer hover:scale-105 hover:opacity-90 hover:shadow-md">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Christopher_Nolan_Cannes_2018.jpg/520px-Christopher_Nolan_Cannes_2018.jpg" class="object-cover h-full w-full -z-10" alt="">
                         <div class="absolute top-0 h-full w-full bg-gradient-to-t from-black/50 p-3 flex flex-col justify-end">
@@ -113,6 +90,9 @@
                             </div>
                         </div>
                     </li>
+                    <!-- /Staff -->
+
+                    <!-- Staff -->
                     <li class="relative rounded-xl overflow-hidden transition cursor-pointer hover:scale-105 hover:opacity-90 hover:shadow-md">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Hans-Zimmer-profile.jpg/400px-Hans-Zimmer-profile.jpg" class="object-cover h-full w-full -z-10" alt="">
                         <div class="absolute top-0 h-full w-full bg-gradient-to-t from-black/50 p-3 flex flex-col justify-end">
@@ -122,11 +102,13 @@
                             </div>
                         </div>
                     </li>
+                    <!-- /Staff -->
                 </ul>
             </div>
             <div class="max-w-3xl mx-auto mt-9">
                 <h2 class="text-lg font-medium text-black">Le <span class="font-bold text-red-600">Casting</span></h2>
                 <ul class="mt-9 grid grid-cols-2 sm:grid-cols-4 gap-x-5 gap-y-5">
+                    <!-- Actor -->
                     <li class="relative rounded-xl overflow-hidden transition cursor-pointer hover:scale-105 hover:opacity-90 hover:shadow-md">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Leonardo_Dicaprio_Cannes_2019.jpg/500px-Leonardo_Dicaprio_Cannes_2019.jpg" class="object-cover h-full w-full -z-10" alt="">
                         <div class="absolute top-0 h-full w-full bg-gradient-to-t from-black/50 p-3 flex flex-col justify-end">
@@ -136,6 +118,9 @@
                             </div>
                         </div>
                     </li>
+                    <!-- /Actor -->
+
+                    <!-- Actor -->
                     <li class="relative rounded-xl overflow-hidden transition cursor-pointer hover:scale-105 hover:opacity-90 hover:shadow-md">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Joseph_Gordon-Levitt_by_Gage_Skidmore_2.jpg/440px-Joseph_Gordon-Levitt_by_Gage_Skidmore_2.jpg" class="object-cover h-full w-full -z-10" alt="">
                         <div class="absolute top-0 h-full w-full bg-gradient-to-t from-black/50 p-3 flex flex-col justify-end">
@@ -145,6 +130,9 @@
                             </div>
                         </div>
                     </li>
+                    <!-- /Actor -->
+
+                    <!-- Actor -->
                     <li class="relative rounded-xl overflow-hidden transition cursor-pointer hover:scale-105 hover:opacity-90 hover:shadow-md">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/2023_National_Book_Festival_%2853122454007%29_%28cropped%29.jpg/440px-2023_National_Book_Festival_%2853122454007%29_%28cropped%29.jpg" class="object-cover h-full w-full -z-10" alt="">
                         <div class="absolute top-0 h-full w-full bg-gradient-to-t from-black/50 p-3 flex flex-col justify-end">
@@ -154,6 +142,9 @@
                             </div>
                         </div>
                     </li>
+                    <!-- /Actor -->
+
+                    <!-- Actor -->
                     <li class="relative rounded-xl overflow-hidden transition cursor-pointer hover:scale-105 hover:opacity-90 hover:shadow-md">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Marion_Cotillard_at_2019_Cannes.jpg/440px-Marion_Cotillard_at_2019_Cannes.jpg" class="object-cover h-full w-full -z-10" alt="">
                         <div class="absolute top-0 h-full w-full bg-gradient-to-t from-black/50 p-3 flex flex-col justify-end">
@@ -163,6 +154,9 @@
                             </div>
                         </div>
                     </li>
+                    <!-- /Actor -->
+
+                    <!-- Actor -->
                     <li class="relative rounded-xl overflow-hidden transition cursor-pointer hover:scale-105 hover:opacity-90 hover:shadow-md">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Tom_Hardy_by_Gage_Skidmore.jpg/520px-Tom_Hardy_by_Gage_Skidmore.jpg" class="object-cover h-full w-full -z-10" alt="">
                         <div class="absolute top-0 h-full w-full bg-gradient-to-t from-black/50 p-3 flex flex-col justify-end">
@@ -172,6 +166,9 @@
                             </div>
                         </div>
                     </li>
+                    <!-- /Actor -->
+
+                    <!-- Actor -->
                     <li class="relative rounded-xl overflow-hidden transition cursor-pointer hover:scale-105 hover:opacity-90 hover:shadow-md">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Ken_Watanabe_01.jpg/440px-Ken_Watanabe_01.jpg" class="object-cover h-full w-full -z-10" alt="">
                         <div class="absolute top-0 h-full w-full bg-gradient-to-t from-black/50 p-3 flex flex-col justify-end">
@@ -181,23 +178,21 @@
                             </div>
                         </div>
                     </li>
+                    <!-- /Actor -->
                 </ul>
             </div>
             <div class="max-w-3xl mx-auto mt-9">
                 <h2 class="text-lg font-medium text-black">Résumé <span class="font-bold text-red-600">détaillé</span></h2>
                 <p class="text-md mt-9">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Culpa dolor error ipsa mollitia necessitatibus perferendis perspiciatis quasi, quidem repellendus rerum. Autem culpa eum iusto magnam voluptatem. Autem doloribus esse natus! Ab commodi deserunt eaque eos incidunt laudantium magni neque officiis optio praesentium sint, voluptates!
-                    <br><br>Assumenda atque blanditiis dicta ducimus, eligendi ex fuga fugiat hic illo laboriosam maiores natus nemo, officiis pariatur perferendis quasi reiciendis repellat repellendus sit ullam, vitae voluptatem voluptatum? Aliquid amet, animi aspernatur consectetur cumque doloribus impedit nihil quidem recusandae totam. Alias architecto cumque cupiditate expedita laboriosam laudantium magni, minus possimus quisquam quod quos suscipit temporibus tenetur.
-                    <br><br>Accusamus adipisci aperiam, assumenda beatae corporis culpa dignissimos dolore dolorem doloremque dolores eveniet libero magnam molestiae molestias nam nulla officiis provident quasi quia quibusdam quod rem repudiandae similique suscipit temporibus velit voluptates. Culpa cum dolor est similique.
-                    <br><br>Exercitationem magnam, necessitatibus. Adipisci, amet asperiores aspernatur atque aut commodi cupiditate dolore ea earum et facilis, fuga in laudantium magnam nulla odio quas repudiandae sunt voluptas, voluptatem. Aspernatur, at cumque delectus dicta dolor ipsam laudantium minus mollitia odit pariatur quia suscipit temporibus velit. Aliquid non officia quo sed vero! Aperiam, cupiditate deserunt earum eligendi, esse excepturi impedit ipsam molestias obcaecati odio quibusdam, tempore unde voluptatibus? Asperiores corporis deleniti doloribus dolorum, eius est eum exercitationem iste molestias obcaecati quae quibusdam quisquam recusandae saepe sequi suscipit, tempora? Odit, quia, voluptatem! Doloribus nemo provident quasi quia veniam? Ab, at deserunt distinctio earum eveniet facilis ipsa nisi officia possimus sed suscipit, tempora unde. Architecto corporis delectus fugit quasi rerum tenetur.
-                    <br><br>Ad alias aut commodi consectetur consequatur, cumque delectus deleniti, distinctio dolore dolorum enim et excepturi facere facilis fugiat impedit incidunt ipsum labore maiores modi molestiae nam necessitatibus nisi numquam, obcaecati odit officiis perferendis placeat praesentium quaerat quia quos tempora vel? Amet cupiditate labore porro temporibus velit? Assumenda deleniti, rem. Corporis nemo nihil nisi quae totam! Alias aut itaque nostrum qui quia quisquam reiciendis soluta voluptates? Atque aut consectetur dicta distinctio dolor, eum, eveniet ipsam, praesentium recusandae reiciendis sapiente tenetur. Ad alias atque commodi culpa debitis delectus doloribus eaque eligendi est expedita fuga illo ipsam laborum libero modi nemo nobis nulla pariatur porro.
-                    <br><br>Quasi quidem quo reiciendis repellendus rerum sequi suscipit, tempore unde velit voluptate voluptatibus? Aperiam architecto cupiditate delectus dolore dolores doloribus earum eius eos in mollitia, non nostrum quasi quidem ratione rem repellendus sequi tempore, velit vitae voluptatum. Cumque, dignissimos dolor ea enim et illo magni mollitia nam nemo omnis, perferendis praesentium quae quidem quo voluptates! Eius harum id in, ipsa libero molestiae omnis provident quasi quisquam saepe, similique voluptates. Ad culpa dolores et explicabo, illo ipsum iusto labore magni nesciunt nisi nobis officiis optio quam quo ullam. Id, inventore iste molestias natus odio officia optio pariatur ut? Animi autem beatae blanditiis cum deserunt dicta dolorum ea eligendi eveniet exercitationem explicabo impedit ipsum laudantium nam nesciunt odit officia pariatur placeat praesentium quam, quasi quia quis quisquam sint soluta tempore temporibus tenetur vero voluptatem voluptatum! Consequuntur ex maiores quam tempore. Aliquam consequatur consequuntur est ex facilis inventore itaque laborum provident quasi quidem, ut voluptas. Beatae consequatur delectus deserunt eligendi est et eveniet explicabo facilis hic illum incidunt ipsum iste magnam nesciunt nobis omnis perspiciatis possimus praesentium quas quia, quo quos recusandae saepe suscipit tempore veniam voluptates voluptatum.
+                    {{ description }}
+                </p>
             </div>
         </section>
         <section class="mt-9">
             <div class="max-w-3xl mx-auto">
                 <h2 class="text-lg font-medium text-black">Les <span class="font-bold text-red-600">commentaires</span></h2>
                 <ul class="space-y-4">
+                    <!-- Comment -->
                     <li class="mt-9">
                         <div class="bg-gray-100 p-4 rounded-lg">
                             <div class="flex items-center">
@@ -213,6 +208,9 @@
                             <p class="mt-4 w-full">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam, consectetur deleniti deserunt ducimus harum iusto laboriosam minima nobis obcaecati odit officiis omnis quibusdam repellat repudiandae totam voluptas, voluptatem voluptatibus voluptatum.</p>
                         </div>
                     </li>
+                    <!-- /Comment -->
+
+                    <!-- Comment -->
                     <li class="mt-9 pl-9 border-l-4">
                         <div class="bg-gray-100 p-4 rounded-lg">
                             <div class="flex items-center">
@@ -228,6 +226,9 @@
                             <p class="mt-4 w-full">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam, consectetur deleniti deserunt ducimus harum iusto laboriosam minima nobis obcaecati.</p>
                         </div>
                     </li>
+                    <!-- /Comment -->
+
+                    <!-- Comment -->
                     <li class="mt-9 pl-9 border-l-4">
                         <div class="bg-gray-100 p-4 rounded-lg">
                             <div class="flex items-center">
@@ -243,6 +244,9 @@
                             <p class="mt-4 w-full">Lorem ipsum dolor sit amet !!</p>
                         </div>
                     </li>
+                    <!-- /Comment -->
+
+                    <!-- Comment -->
                     <li class="mt-9 pl-9 border-l-4 relative cursor-not-allowed">
                         <span class="absolute top-2 right-2 px-3 py-1 bg-orange-100 rounded-md">En attente de vérification</span>
                         <div class="bg-gray-100 p-4 rounded-lg opacity-40">
@@ -259,6 +263,7 @@
                             <p class="mt-4 w-full">Lorem ipsum dolor sit amet !!</p>
                         </div>
                     </li>
+                    <!-- /Comment -->
                 </ul>
                 <form class="mt-9 bg-gray-100 p-4 rounded-lg">
                     <h3 class="text-center text-md font-bold my-4">Réagir / commenter le film ?</h3>
@@ -278,8 +283,4 @@
             </div>
         </section>
     </main>
-</div>
-
-</body>
-
-</html>
+{% endblock %}

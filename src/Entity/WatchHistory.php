@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use App\Repository\WatchHistoryRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: WatchHistoryRepository::class)]
@@ -13,15 +16,15 @@ class WatchHistory
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?\DateTimeImmutable $lastWatchedAt = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $lastWatchedAt = null;
 
     #[ORM\Column]
     private ?int $numberOfViews = null;
 
-    #[ORM\ManyToOne(inversedBy: 'watchHistories')]
+    #[ORM\ManyToOne(inversedBy: 'media')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $watcher = null;
+    private ?User $viewer = null;
 
     #[ORM\ManyToOne(inversedBy: 'watchHistories')]
     #[ORM\JoinColumn(nullable: false)]
@@ -32,12 +35,12 @@ class WatchHistory
         return $this->id;
     }
 
-    public function getLastWatchedAt(): ?\DateTimeImmutable
+    public function getLastWatchedAt(): ?\DateTimeInterface
     {
         return $this->lastWatchedAt;
     }
 
-    public function setLastWatchedAt(\DateTimeImmutable $lastWatchedAt): static
+    public function setLastWatchedAt(\DateTimeInterface $lastWatchedAt): static
     {
         $this->lastWatchedAt = $lastWatchedAt;
 
@@ -56,14 +59,14 @@ class WatchHistory
         return $this;
     }
 
-    public function getWatcher(): ?User
+    public function getViewer(): ?User
     {
-        return $this->watcher;
+        return $this->viewer;
     }
 
-    public function setWatcher(?User $watcher): static
+    public function setViewer(?User $viewer): static
     {
-        $this->watcher = $watcher;
+        $this->viewer = $viewer;
 
         return $this;
     }

@@ -1,0 +1,15 @@
+App\Entity\Season:
+  season_1_{@media_serie_*}:
+    serie: '@media_serie_*'
+    seasonNumber: 1
+    episodes: []
+
+  season_2_{@media_serie_*}:
+    serie: '@media_serie_*'
+    seasonNumber: 2
+    episodes: []
+
+  season_3_{@media_serie_*}:
+    serie: '@media_serie_*'
+    seasonNumber: 3
+    episodes: []

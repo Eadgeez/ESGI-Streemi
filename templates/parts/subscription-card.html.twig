@@ -1,0 +1,21 @@
+<li class="relative flex">
+    <a href="#" class="w-full border-4 border-red-600 rounded-lg py-4 px-7 transition hover:bg-black/5">
+        <div class="flex items-center justify-between">
+            <div class="flex flex-col items-start justify-center">
+                <h3 class="font-bold text-lg">{{ name }}{% if quality is defined and quality is not null %} - {{ quality }}{% endif %}</h3>
+                {% if catchphrase is defined and catchphrase is not null %}
+                    <span class="font-medium text-gray-400 text-nowrap">{{ catchphrase }}</span>
+                {% endif %}
+            </div>
+            <span class="text-3xl font-bold">{{ price }}€</span>
+        </div>
+        {% if description is defined and description is not null %}
+            <p class="flex items-start justify-between mt-5 mb-8 text-md pr-3">
+                {{ description }}
+            </p>
+        {% endif %}
+        <div>
+            <button class="border-transparent bg-red-600 px-4 py-3 text-md text-white rounded-md">S'abonner</button>
+        </div>
+    </a>
+</li>
