@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Auth;
 
+use App\Enum\UserAccountStatusEnum;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -54,8 +55,37 @@ class AuthController extends AbstractController
     }
 
     #[Route('/register', name: 'register')]
-    public function register(): Response
+    public function register(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        UserPasswordHasherInterface $passwordHasher
+    ): Response
     {
+        if ($request->isMethod('POST')) {
+            $user = new User();
+            $user->setUsername($request->request->get('firstname'));
+            $user->setEmail($request->request->get('email'));
+            $user->setAccountStatus(UserAccountStatusEnum::ACTIVE);
+            $user->setRoles(['ROLE_USER']);
+
+            if ($request->request->get('password') === $request->request->get('repeated-password')) {
+                $hashedPassword = $passwordHasher->hashPassword(
+                    $user,
+                    $request->request->get('password')
+                );
+                $user->setPassword($hashedPassword);
+            } else {
+                return $this->render('auth/register.html.twig', [
+                    'error' => 'Passwords do not match'
+                ]);
+            }
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('login');
+        }
+
         return $this->render('auth/register.html.twig');
     }
 

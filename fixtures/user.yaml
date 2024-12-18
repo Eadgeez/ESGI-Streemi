@@ -4,14 +4,27 @@ App\Entity\User:
     email: '<email()>'
     plainPassword: '<password()>'
     accountStatus: !php/const \App\Enum\UserAccountStatusEnum::ACTIVE
+    roles: []
 
   user_1 (extends user):
     username: 'Max'
     email: 'mmenard18@myges.fr'
     plainPassword: 'max07'
+    roles: ['ROLE_SUPER_ADMIN']
 
-  user_{2..10} (extends user):
+  user_2 (extends user):
+    username: 'admin'
+    email: 'admin@streemi.com'
+    plainPassword: 'admin01'
+    roles: ['ROLE_ADMIN']
+
+  user_{3..5} (extends user):
     accountStatus: !php/const \App\Enum\UserAccountStatusEnum::ACTIVE
+    roles: ['ROLE_USER_WITH_SUBSCRIPTION']
+
+  user_{6..10} (extends user):
+    accountStatus: !php/const \App\Enum\UserAccountStatusEnum::ACTIVE
+    roles: ['ROLE_USER']
 
   user_{11..20} (extends user):
     accountStatus: !php/const \App\Enum\UserAccountStatusEnum::INACTIVE
